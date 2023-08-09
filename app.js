@@ -3,6 +3,9 @@ const fs = require('fs');
 const app = express();
 
 const morgan = require('morgan');
+
+const tourRouter = express.Router();
+const userRouter = express.Router();
 // Building the API to send the Tours available to the client
 
 // When getting post requests we need to use a middleware to recieve the req from the client
@@ -141,16 +144,13 @@ const deleteUser = (req, res) => {
 
 // We can also chain the routes by using the route functionality in Express
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app
-  .route('/api/v1/tours/:id')
-  .get(getTourByID)
-  .patch(updateTour)
-  .delete(deleteTour);
+tourRouter.route('/').get(getAllTours).post(createTour);
+tourRouter.route('/:id').get(getTourByID).patch(updateTour).delete(deleteTour);
 
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
-app
-  .route('/api/v1/users/:id')
-  .get(getUserByID)
-  .patch(updateUser)
-  .delete(deleteUser);
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUserByID).patch(updateUser).delete(deleteUser);
+
+// Routers
+// This is called mounting the router
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
