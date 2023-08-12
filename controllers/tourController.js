@@ -1,26 +1,28 @@
-const fs = require('fs');
+// const fs = require('fs');
+const Tour = require('../models/tourModel');
+
 // Building the API to send the Tours available to the client
 // When getting post requests we need to use a middleware to recieve the req from the client
 // This here is a simple middleware, but we can also create our own middlewares
 // Middleware - Simply a function that can modify the incoming requests.
 // Reading the API from the file in a synchronous way. Since it is executed only once
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-);
+// const tours = JSON.parse(
+//   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
+// );
 
 // param middleware for checking the tour id
-exports.checkID = (req, res, next, val) => {
-  //If the Tour does not exist
-  //We can add the code for updating the object
-  const id = Number(req.params.id);
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Resource not found',
-    });
-  }
-  next();
-};
+// exports.checkID = (req, res, next, val) => {
+//   //If the Tour does not exist
+//   //We can add the code for updating the object
+//   const id = Number(req.params.id);
+//   if (id > tours.length) {
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Resource not found',
+//     });
+//   }
+//   next();
+// };
 
 exports.checkBody = (req, res, next) => {
   if (!req.body.name || !req.body.price) {
@@ -37,44 +39,44 @@ exports.checkBody = (req, res, next) => {
 exports.getAllTours = (req, res) => {
   res.json({
     status: 'success',
-    results: tours.length,
-    data: {
-      tours: tours,
-    },
+    // results: tours.length,
+    // data: {
+    //   tours: tours,
+    // },
   });
 };
 
 // Handling GET requests with tour with specific IDs
 exports.getTourByID = (req, res) => {
-  const id = Number(req.params.id);
-  const tour = tours.find((el) => el.id === id);
+  // const id = Number(req.params.id);
+  // const tour = tours.find((el) => el.id === id);
   res.json({
     status: 'success',
     results: 1,
-    data: {
-      tour: tour,
-    },
+    // data: {
+    //   tour: tour,
+    // },
   });
 };
 // Handling POST requests and adding new tour in the file asynchronously
 exports.createTour = (req, res) => {
   // console.log(req.body);
-  const newID = tours.at(-1).id + 1;
-  const newTour = Object.assign({ id: newID }, req.body);
-  tours.push(newTour);
-  fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    (err) => {
-      res.status(201).json({
-        status: 'success',
-        results: tours.length,
-        data: {
-          tours,
-        },
-      });
-    }
-  );
+  // const newID = tours.at(-1).id + 1;
+  // const newTour = Object.assign({ id: newID }, req.body);
+  // tours.push(newTour);
+  // fs.writeFile(
+  //   `${__dirname}/dev-data/data/tours-simple.json`,
+  //   JSON.stringify(tours),
+  //   (err) => {
+  //     res.status(201).json({
+  //       status: 'success',
+  //       results: tours.length,
+  //       data: {
+  //         tours,
+  //       },
+  //     });
+  //   },
+  // );
 };
 //Handling PATCH requests to update the data
 //Dummy PATCH method implementation
